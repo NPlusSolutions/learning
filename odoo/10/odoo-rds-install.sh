@@ -33,6 +33,13 @@ IS_ENTERPRISE="False"
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 
+#set the rds database
+DB_USER="RDSUsername"
+DB_PASSWORD="RDSPassword"
+DB_NAME="DatabaseName"
+DB_HOST="RDSEndpoint"
+
+
 ##
 ###  WKHTMLTOPDF download links
 ## === Ubuntu Trusty x64 & x32 === (for other distributions please replace these two links,
@@ -137,8 +144,11 @@ sudo chown $OE_USER:$OE_USER /etc/${OE_CONFIG}.conf
 sudo chmod 640 /etc/${OE_CONFIG}.conf
 
 echo -e "* Change server config file"
-sudo sed -i s/"db_user = .*"/"db_user = $OE_USER"/g /etc/${OE_CONFIG}.conf
+sudo sed -i s/"db_user = .*"/"db_user = $DB_USER"/g /etc/${OE_CONFIG}.conf
 sudo sed -i s/"; admin_passwd.*"/"admin_passwd = $OE_SUPERADMIN"/g /etc/${OE_CONFIG}.conf
+sudo sed -i s/"; db_password.*"/"db_password = $DB_PASSWORD"/g /etc/${OE_CONFIG}.conf
+sudo sed -i s/"; db_host.*"/"db_host = $DB_HOST"/g /etc/${OE_CONFIG}.conf
+sudo sed -i s/"; db_name.*"/"db_name = $DB_NAME"/g /etc/${OE_CONFIG}.conf
 sudo su root -c "echo '[options]' >> /etc/${OE_CONFIG}.conf"
 sudo su root -c "echo 'logfile = /var/log/$OE_USER/$OE_CONFIG$1.log' >> /etc/${OE_CONFIG}.conf"
 if [  $IS_ENTERPRISE = "True" ]; then
